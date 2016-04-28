@@ -10,12 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.arte.quicknotes.NoteListMock;
 import com.arte.quicknotes.R;
 import com.arte.quicknotes.adapters.NotesAdapter;
+import com.arte.quicknotes.models.Note;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotesAdapter.Events {
+
+    private NotesAdapter mAdapter = new NotesAdapter(NoteListMock.getList(), this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +39,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(context, NoteActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notes_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        NotesAdapter adapter = new NotesAdapter(NoteListMock.getList());
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNoteClicked(Note note) {
+        Intent intent = new Intent(this, NoteActivity.class);
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(NoteActivity.PARAM_NOTE, note);
+        intent.putExtras(arguments);
+
+        startActivityForResult(intent, 0);
+    }
 }

@@ -3,4 +3,8 @@
     <string name="title_activity_basic">BasicActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hola_mundo">Hola mundo</string>
+    <string name="note.title">Title</string>
+    <string name="note.content">Content</string>
+    <string name="menu.save">Guardar</string>
+    <string name="menu.delete">Borrar</string>
 </resources>
