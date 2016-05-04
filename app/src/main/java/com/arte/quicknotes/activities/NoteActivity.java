@@ -7,8 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.arte.quicknotes.NoteListMock;
 import com.arte.quicknotes.R;
+import com.arte.quicknotes.db.NotesDataSource;
 import com.arte.quicknotes.models.Note;
 
 public class NoteActivity extends AppCompatActivity {
@@ -18,6 +18,8 @@ public class NoteActivity extends AppCompatActivity {
     private EditText mTitle;
     private EditText mContent;
     private Note mNote;
+
+    private NotesDataSource mNotesDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +69,23 @@ public class NoteActivity extends AppCompatActivity {
     private void saveNote() {
         String title = mTitle.getText().toString();
         String content = mContent.getText().toString();
+
         if (mNote == null) {
             Note note = new Note();
             note.setTitle(title);
             note.setContent(content);
-            NoteListMock.addNote(note);
+            mNotesDataSource.createNote(note);
         } else {
             mNote.setTitle(title);
             mNote.setContent(content);
-            NoteListMock.updateNote(mNote);
+            mNotesDataSource.updateNote(mNote);
         }
         finish();
     }
 
     private void deleteNote() {
         if (mNote != null) {
-            NoteListMock.deleteNote(mNote);
+            mNotesDataSource.deleteNote(mNote);
         }
         finish();
     }
@@ -90,6 +93,8 @@ public class NoteActivity extends AppCompatActivity {
     private void setupActivity() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mNotesDataSource = NotesDataSource.getInstance(this);
 
         mTitle = (EditText) findViewById(R.id.et_title);
         mContent = (EditText) findViewById(R.id.et_content);

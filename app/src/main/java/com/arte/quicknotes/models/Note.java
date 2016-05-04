@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Note implements Serializable {
 
-    private static final int NOTE_EXCERPT_LENGTH = 100;
+    private static final int NOTE_EXCERPT_MAX_LENGTH = 100;
 
     private int id;
     private String title;
@@ -37,11 +37,11 @@ public class Note implements Serializable {
             return "";
         }
 
-        if (content.length() < NOTE_EXCERPT_LENGTH) {
+        if (content.length() < NOTE_EXCERPT_MAX_LENGTH) {
             return content;
         }
 
-        return content.substring(0, NOTE_EXCERPT_LENGTH);
+        return content.substring(0, NOTE_EXCERPT_MAX_LENGTH);
     }
 
     public int getId() {
