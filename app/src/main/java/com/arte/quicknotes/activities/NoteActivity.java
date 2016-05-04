@@ -46,6 +46,8 @@ public class NoteActivity extends AppCompatActivity {
             case R.id.action_save:
                 saveNote();
                 return true;
+            case R.id.action_delete:
+                deleteNote();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -74,6 +76,13 @@ public class NoteActivity extends AppCompatActivity {
             mNote.setTitle(title);
             mNote.setContent(content);
             NoteListMock.updateNote(mNote);
+        }
+        finish();
+    }
+
+    private void deleteNote() {
+        if (mNote != null) {
+            NoteListMock.deleteNote(mNote);
         }
         finish();
     }
